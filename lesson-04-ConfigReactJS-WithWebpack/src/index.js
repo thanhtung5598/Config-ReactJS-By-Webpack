@@ -1,4 +1,21 @@
-import React from "react";
-import ReactDom from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './component/App/App';
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import appReducer from "./reducers/index";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery'
+import 'bootstrap/dist/js/bootstrap.min.js';
 
-ReactDom.render(<h1>Hello React Webpack</h1>,document.getElementById('root'));
+const store = createStore(
+    appReducer,
+    applyMiddleware(thunk),
+);
+
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root'));
