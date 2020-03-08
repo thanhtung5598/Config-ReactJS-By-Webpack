@@ -20,6 +20,7 @@ class App extends Component {
         return result;
     }
     render() {
+        console.log("render");
         return (
             <HashRouter>
                 <div>

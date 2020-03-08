@@ -2,11 +2,38 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 
+const VENDOR_LIBS = [
+    "axios",
+    "bootstrap",
+    "jquery",
+    "react",
+    "react-dom",
+    "react-redux",
+    "react-router-dom",
+    "redux",
+    "redux-thunk"
+];
+
+const devServer = {
+    port: 4000,
+    open: true,
+    disableHostCheck: true,
+    historyApiFallback: true,
+    overlay: true,
+    stats: 'minimal',
+    inline: true,
+    compress: true,
+    contentBase: '/'
+};
+
 module.exports = {
-    entry: './src/index.js',
+    entry: {
+        bundle: './src/index.js',
+        vendor: VENDOR_LIBS
+    },
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: 'bundle.js'
+        filename: '[name].[chunkhash].js'
     },
     performance: {
         hints: false,
@@ -55,5 +82,17 @@ module.exports = {
             $: 'jquery',
             jQuery: 'jquery'
         })
-    ]
+    ],
+    devServer,
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                  test: /[\\/]node_modules[\\/]/,
+                  name: 'vendor',
+                  chunks: 'all'
+                }
+              }
+        }
+    }
 }
